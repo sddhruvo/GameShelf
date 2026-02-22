@@ -1,0 +1,209 @@
+# GameVault Ad Domain Blocklist
+# Gaming-focused ad networks and trackers
+# One domain per line, # for comments
+
+# === Google AdMob / Google Ads ===
+pagead2.googlesyndication.com
+googleads.g.doubleclick.net
+ad.doubleclick.net
+ads.google.com
+adservice.google.com
+googleadservices.com
+pagead.l.doubleclick.net
+tpc.googlesyndication.com
+www.googleadservices.com
+partner.googleadservices.com
+www.googletagservices.com
+aclk.googleadservices.com
+securepubads.g.doubleclick.net
+adclick.g.doubleclick.net
+googleads.g.doubleclick.net
+googleads2.g.doubleclick.net
+googleads4.g.doubleclick.net
+app-measurement.com
+google-analytics.com
+ssl.google-analytics.com
+www.google-analytics.com
+analytics.google.com
+fundingchoicesmessages.google.com
+
+# === Unity Ads ===
+unityads.unity3d.com
+ads.unity3d.com
+adserver.unityads.unity3d.com
+config.unityads.unity3d.com
+auction.unityads.unity3d.com
+webview.unityads.unity3d.com
+cdn-creatives-highwinds-prd.unityads.unity3d.com
+publisher-event.unityads.unity3d.com
+monetization-event.unityads.unity3d.com
+
+# === AppLovin ===
+d.applvn.com
+ms.applvn.com
+rt.applvn.com
+a.applvn.com
+assets.applovin.com
+ms.applovin.com
+d.applovin.com
+a.applovin.com
+rt.applovin.com
+pdn.applovin.com
+img.applovin.com
+api.applovin.com
+events.applovin.com
+prod-a.applovin.com
+prod-d.applovin.com
+
+# === IronSource ===
+outcome-ssp.supersonicads.com
+init.supersonicads.com
+is-sdk.supersonicads.com
+rv-gateway.supersonicads.com
+bw-gateway.supersonicads.com
+ow-gateway.supersonicads.com
+supersonicads.com
+edgecast.supersonicads.com
+loyalty.supersonicads.com
+outcome.supersonicads.com
+mediation.supersonicads.com
+
+# === Vungle / Liftoff ===
+ads.api.vungle.com
+api.vungle.com
+cdn-lb.vungle.com
+ads.vungle.com
+tpat-pb.vungle.com
+config.vungle.com
+events.vungle.com
+
+# === AdColony ===
+ads3.adcolony.com
+events3.adcolony.com
+adc3-launch.adcolony.com
+wd.adcolony.com
+ssa.adcolony.com
+adcolony.com
+
+# === Chartboost ===
+live.chartboost.com
+da.chartboost.com
+a.chartboost.com
+el.chartboost.com
+auction.chartboost.com
+tracking.chartboost.com
+analytics.chartboost.com
+
+# === Meta Audience Network ===
+an.facebook.com
+www.facebook.com/audiencenetwork
+an.facebook.net
+graph.facebook.com/network_ads
+
+# === InMobi ===
+ads.inmobi.com
+config.inmobi.com
+api.inmobi.com
+sdktm.w.inmobi.com
+i.w.inmobi.com
+cr.inmobi.com
+events.inmobi.com
+
+# === MoPub (Twitter) ===
+ads.mopub.com
+cb.mopub.com
+c2.mopub.com
+cds.mopub.com
+mpx.mopub.com
+
+# === Fyber / Digital Turbine ===
+ads.fyber.com
+ia.fyber.com
+rewardedvideo.fyber.com
+offer.fyber.com
+banner.fyber.com
+interstitial.fyber.com
+
+# === Tapjoy ===
+ads.tapjoy.com
+analytics.tapjoy.com
+connect.tapjoy.com
+rpc.tapjoy.com
+ws.tapjoy.com
+placements.tapjoy.com
+
+# === Pangle (ByteDance/TikTok) ===
+pangleglobal.bsgslb.com
+sf16-mssdk-va.ibytedtos.com
+api-access.pangleglobal.com
+api16-access.pangle.io
+
+# === StartApp ===
+init.startappservice.com
+req.startappservice.com
+imp.startappservice.com
+adcontent.startappservice.com
+
+# === General Ad Trackers ===
+ad.lgappstv.com
+ads.yahoo.com
+ads.yimg.com
+advertising.com
+ad.turn.com
+ads.pubmatic.com
+ads.rubiconproject.com
+ads.openx.net
+ad.smaato.net
+soma.smaato.net
+prebid.media.net
+ad.leadbolt.net
+tracking.leadbolt.net
+ads.buzzcity.net
+
+# === Mobile Measurement / Attribution ===
+app.adjust.com
+s2s.adjust.com
+app.appsflyer.com
+launches.appsflyer.com
+t.appsflyer.com
+api2.branch.io
+bnc.lt
+cdn.branch.io
+app.link
+impression.link
+kochava.com
+control.kochava.com
+imp.control.kochava.com
+
+# === General Analytics / Tracking ===
+graph.facebook.com
+pixel.facebook.com
+connect.facebook.net
+static.ads-twitter.com
+ads-api.twitter.com
+analytics.twitter.com
+fire-ads.amazon.com
+aax.amazon-adsystem.com
+mads.amazon.com
+amazon-adsystem.com
+ad.smaato.net
+b.scorecardresearch.com
+sb.scorecardresearch.com
+certify-us.imrworldwide.com
+secure-us.imrworldwide.com
+crashlytics.com
+settings.crashlytics.com
+e.crashlytics.com
+
+# === Miscellaneous Ad Networks ===
+ads.adtheorent.com
+adsappier.com
+adn.sdk.adincube.com
+cdn.ad.plus
+cdn.ad4game.com
+mobile.analytics.comscore.com
+ad.smartclip.net
+ads.nexage.com
+ssp.api.tappx.com
+sdk.adincube.com
+sdk-events.adincube.com

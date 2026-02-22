@@ -1,0 +1,168 @@
+# Gradle files
+.gradle/
+.gradletasknamecache
+gradle-app.setting
+build/
+
+# Gradle wrapper (generated)
+# We DO commit gradle wrapper JAR and properties for reproducible builds
+# Uncomment only if you want to ignore wrapper files:
+# gradle/wrapper/gradle-wrapper.jar
+# gradle/wrapper/gradle-wrapper.properties
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings
+.DS_Store
+*.class
+*.log
+
+# Local build artifacts
+*.apk
+*.ap_
+*.dex
+
+# Compiled classes
+bin/
+gen/
+out/
+.class
+
+# Generated files
+src/main/java/com/example/*/R.java
+R.java
+R.class
+Manifest.java
+
+# Local properties
+local.properties
+
+# Signing configs and keystores
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+signing.properties
+signing/
+
+# Lint
+lint-results.xml
+lint-results-*.html
+
+# User-specific stuff
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/encodings.xml
+.idea/compiler.xml
+.idea/modules.xml
+.idea/libraries
+.idea/.name
+.idea/misc.xml
+.idea/modules/
+*.iml
+
+# Android Profiler
+.idea/profiler/
+
+# Android Gradle
+.gradle/
+gradle-app.setting
+
+# Build directories
+build/
+*/build/
+
+# Kotlin
+.kotlin_module
+.kotlinc.json
+
+# DS_Store
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test results
+test-results/
+
+# Node modules (if using npm/yarn for assets)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python (if using Python tools)
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# IDE-specific files
+.vscode/
+.vs/
+*.swp
+*.swo
+*~
+.classpath
+.project
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Gradle cache
+.gradle/
+
+# System files
+.system_files
+
+# Android Virtual Device files
+.android/
+emulator.log
+
+# AAB and APK files (build outputs)
+*.apk
+*.aab
+
+# Generated Proguard files
+proguard-mapped.txt
+proguard.txt
+
+# Firebase (if using)
+google-services.json
+
+# Custom outputs
+output/
+outputs/
+reports/
+
+# Claude Code
+.claude/
+
+# Project docs (local only)
+issue.md
+
+# Handoff files
+HANDOFF.md
+handoff.md
+HANDOFF*.md
+handoff*.md
+CLAUDE.md
