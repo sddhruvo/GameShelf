@@ -12,7 +12,7 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class GameVaultApp : Application(), Configuration.Provider {
+class GameShelfApp : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
@@ -69,7 +69,7 @@ class GameVaultApp : Application(), Configuration.Provider {
     }
 
     private fun onAppForeground() {
-        // User is back in GameVault — they're done playing
+        // User is back in GameShelf — they're done playing
         if (adBlockManager.isAutoStarted() && adBlockManager.isRunning()) {
             adBlockManager.stopVpn()
         }

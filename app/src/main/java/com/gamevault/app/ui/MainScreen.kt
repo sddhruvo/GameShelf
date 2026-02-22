@@ -14,7 +14,7 @@ import com.gamevault.app.R
 import com.gamevault.app.ui.home.HomeContent
 import com.gamevault.app.ui.settings.SettingsScreen
 import com.gamevault.app.ui.stats.StatsScreen
-import com.gamevault.app.ui.theme.LocalGameVaultColors
+import com.gamevault.app.ui.theme.LocalGameShelfColors
 import com.gamevault.app.ui.updates.UpdatesScreen
 import kotlinx.coroutines.launch
 
@@ -27,7 +27,7 @@ data class TabItem(
 fun MainScreen(
     onGameDetail: (String) -> Unit
 ) {
-    val gvColors = LocalGameVaultColors.current
+    val gvColors = LocalGameShelfColors.current
     val pagerState = rememberPagerState(pageCount = { 4 })
     val scope = rememberCoroutineScope()
     val selectedPage by remember { derivedStateOf { pagerState.currentPage } }

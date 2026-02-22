@@ -32,18 +32,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".GameVaultApp"
+        android:name=".GameShelfApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GameVault">
+        android:theme="@style/Theme.GameShelf">
 
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.GameVault.Splash">
+            android:theme="@style/Theme.GameShelf.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -97,7 +97,7 @@
 
         <!-- Quick Settings Tile -->
         <service
-            android:name=".service.GameVaultTileService"
+            android:name=".service.GameShelfTileService"
             android:icon="@drawable/ic_gamepad"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
@@ -109,7 +109,7 @@
 
         <!-- Widget Provider -->
         <receiver
-            android:name=".widget.GameVaultWidgetReceiver"
+            android:name=".widget.GameShelfWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

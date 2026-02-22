@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">GameVault</h1>
+  <h1 align="center">GameShelf</h1>
   <p align="center">Your personal game launcher & tracker for Android</p>
 </p>
 
@@ -11,7 +11,7 @@
 
 ---
 
-GameVault brings all your mobile games into one place. It detects your installed games, tracks how long you play, and gives you detailed stats and tools to manage your gaming habits — all offline, with zero ads and zero data collection.
+GameShelf brings all your mobile games into one place. It detects your installed games, tracks how long you play, and gives you detailed stats and tools to manage your gaming habits — all offline, with zero ads and zero data collection.
 
 ## Screenshots
 
@@ -35,7 +35,7 @@ GameVault brings all your mobile games into one place. It detects your installed
 - Set custom cover images
 
 ### Playtime Tracking
-- Automatic session recording — just play, GameVault handles the rest
+- Automatic session recording — just play, GameShelf handles the rest
 - Stats at a glance: today, this week, this month, and all time
 - Interactive weekly bar chart showing your daily playtime
 - Play streak tracking — see how many consecutive days you've been gaming
@@ -45,7 +45,7 @@ GameVault brings all your mobile games into one place. It detects your installed
 - **Floating Timer** — draggable overlay that shows elapsed or remaining time on top of any game
 - **Do Not Disturb** — automatically silences notifications when you launch a game
 - **Daily Screen Time Goal** — set a daily limit and get notified when you hit it
-- **Quick Settings Tile** — launch GameVault from your notification shade
+- **Quick Settings Tile** — launch GameShelf from your notification shade
 
 ### Ad Blocker
 - Lightweight, local DNS-based ad blocking — no traffic leaves your device
@@ -69,11 +69,11 @@ GameVault brings all your mobile games into one place. It detects your installed
 
 ## Download
 
-Grab the latest APK from [Releases](https://github.com/sddhruvo/GameVault/releases).
+Grab the latest APK from [Releases](https://github.com/sddhruvo/GameShelf/releases).
 
 ## Privacy & Data
 
-**Everything stays on your device.** GameVault does not collect, transmit, or share any personal data. There are no analytics, no telemetry, no servers.
+**Everything stays on your device.** GameShelf does not collect, transmit, or share any personal data. There are no analytics, no telemetry, no servers.
 
 The only network requests the app makes are:
 - **Ad blocker** — local DNS filtering (queries stay on-device via a local VPN)
@@ -100,11 +100,11 @@ The only network requests the app makes are:
 
 ## Feedback
 
-Found a bug? Use **Settings > Report a Bug** in the app to send a pre-filled email, or open an issue on [GitHub](https://github.com/sddhruvo/GameVault/issues).
+Found a bug? Use **Settings > Report a Bug** in the app to send a pre-filled email, or open an issue on [GitHub](https://github.com/sddhruvo/GameShelf/issues).
 
 ## Support
 
-If you enjoy GameVault and want to support its development:
+If you enjoy GameShelf and want to support its development:
 
 [Buy me a coffee via PayPal](https://paypal.me/sddhruvo)
 

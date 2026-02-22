@@ -23,7 +23,7 @@ import com.gamevault.app.BuildConfig
 import com.gamevault.app.service.WeeklyReportWorker
 import com.gamevault.app.ui.home.HomeViewModel
 import com.gamevault.app.ui.home.dataStore
-import com.gamevault.app.ui.theme.GameVaultTheme
+import com.gamevault.app.ui.theme.GameShelfTheme
 import com.gamevault.app.ui.theme.ThemeMode
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
@@ -92,7 +92,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            GameVaultTheme(
+            GameShelfTheme(
                 themeMode = themeMode,
                 dynamicColor = dynamicColor
             ) {
@@ -109,7 +109,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                GameVaultNavHost(
+                GameShelfNavHost(
                     navController = navController,
                     startDestination = startDestination
                 )

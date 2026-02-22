@@ -32,7 +32,7 @@ import com.gamevault.app.service.InstalledApp
 import com.gamevault.app.ui.components.GameCard
 import com.gamevault.app.ui.components.GameSearchBar
 import com.gamevault.app.ui.components.SortMenu
-import com.gamevault.app.ui.theme.LocalGameVaultColors
+import com.gamevault.app.ui.theme.LocalGameShelfColors
 import com.gamevault.app.util.FormatUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -52,7 +52,7 @@ fun HomeContent(
     val todayPlaytime by viewModel.todayPlaytime.collectAsStateWithLifecycle()
     val donateDismissed by viewModel.donateDismissed.collectAsStateWithLifecycle()
     val firstLaunchTime by viewModel.firstLaunchTime.collectAsStateWithLifecycle()
-    val gvColors = LocalGameVaultColors.current
+    val gvColors = LocalGameShelfColors.current
     val homeContext = LocalContext.current
 
     val showDonateCard = !donateDismissed &&
@@ -127,14 +127,14 @@ fun HomeContent(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "Enjoying GameVault?",
+                            "Enjoying GameShelf?",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "This app is built by a solo developer. If GameVault has been useful to you, consider supporting its development!",
+                        "This app is built by a solo developer. If GameShelf has been useful to you, consider supporting its development!",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )

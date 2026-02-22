@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.gamevault.app.R
-import com.gamevault.app.ui.theme.LocalGameVaultColors
+import com.gamevault.app.ui.theme.LocalGameShelfColors
 
 @Composable
 fun GameSearchBar(
@@ -21,7 +21,7 @@ fun GameSearchBar(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val gvColors = LocalGameVaultColors.current
+    val gvColors = LocalGameShelfColors.current
 
     OutlinedTextField(
         value = query,

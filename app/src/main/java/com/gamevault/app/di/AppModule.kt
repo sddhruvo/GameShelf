@@ -16,10 +16,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): GameVaultDatabase {
+    fun provideDatabase(@ApplicationContext context: Context): GameShelfDatabase {
         return Room.databaseBuilder(
             context,
-            GameVaultDatabase::class.java,
+            GameShelfDatabase::class.java,
             "gamevault_db"
         )
             .fallbackToDestructiveMigration()
@@ -27,14 +27,14 @@ object AppModule {
     }
 
     @Provides
-    fun provideGameDao(db: GameVaultDatabase): GameDao = db.gameDao()
+    fun provideGameDao(db: GameShelfDatabase): GameDao = db.gameDao()
 
     @Provides
-    fun provideSessionDao(db: GameVaultDatabase): SessionDao = db.sessionDao()
+    fun provideSessionDao(db: GameShelfDatabase): SessionDao = db.sessionDao()
 
     @Provides
-    fun provideCollectionDao(db: GameVaultDatabase): CollectionDao = db.collectionDao()
+    fun provideCollectionDao(db: GameShelfDatabase): CollectionDao = db.collectionDao()
 
     @Provides
-    fun provideUpdateDao(db: GameVaultDatabase): UpdateDao = db.updateDao()
+    fun provideUpdateDao(db: GameShelfDatabase): UpdateDao = db.updateDao()
 }

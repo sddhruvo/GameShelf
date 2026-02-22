@@ -19,7 +19,7 @@ object Routes {
 }
 
 @Composable
-fun GameVaultNavHost(
+fun GameShelfNavHost(
     navController: NavHostController,
     startDestination: String
 ) {

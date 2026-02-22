@@ -32,7 +32,7 @@ import androidx.core.graphics.drawable.toBitmap
 import coil.compose.AsyncImage
 import com.gamevault.app.data.model.Game
 import com.gamevault.app.ui.home.ViewMode
-import com.gamevault.app.ui.theme.LocalGameVaultColors
+import com.gamevault.app.ui.theme.LocalGameShelfColors
 import com.gamevault.app.util.FormatUtils
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -66,7 +66,7 @@ fun GameCard(
 
 @Composable
 private fun glassModifier(shape: RoundedCornerShape): Modifier {
-    val gvColors = LocalGameVaultColors.current
+    val gvColors = LocalGameShelfColors.current
     return if (gvColors.isGlass) {
         Modifier
             .background(gvColors.glassSurface, shape)
@@ -86,7 +86,7 @@ private fun GameGridCard(
     onFavoriteToggle: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val gvColors = LocalGameVaultColors.current
+    val gvColors = LocalGameShelfColors.current
     val shape = RoundedCornerShape(16.dp)
 
     Card(
@@ -200,7 +200,7 @@ private fun GameListCard(
     onFavoriteToggle: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val gvColors = LocalGameVaultColors.current
+    val gvColors = LocalGameShelfColors.current
     val shape = RoundedCornerShape(12.dp)
 
     Card(
@@ -326,7 +326,7 @@ private fun GameIconCard(
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val gvColors = LocalGameVaultColors.current
+    val gvColors = LocalGameShelfColors.current
 
     Column(
         modifier = modifier

@@ -19,7 +19,7 @@ import com.gamevault.app.data.model.PlaySession
     version = 1,
     exportSchema = true
 )
-abstract class GameVaultDatabase : RoomDatabase() {
+abstract class GameShelfDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
     abstract fun sessionDao(): SessionDao
     abstract fun collectionDao(): CollectionDao

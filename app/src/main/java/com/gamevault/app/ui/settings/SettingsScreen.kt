@@ -251,7 +251,7 @@ fun SettingsScreen(
                     icon = Icons.Default.Upload,
                     title = "Export Data",
                     subtitle = "Export all data as JSON",
-                    onClick = { exportLauncher.launch("gamevault_export.json") }
+                    onClick = { exportLauncher.launch("gameshelf_export.json") }
                 )
             }
 
@@ -288,7 +288,7 @@ fun SettingsScreen(
             item {
                 SettingsItem(
                     icon = Icons.Default.Info,
-                    title = "GameVault",
+                    title = "GameShelf",
                     subtitle = "Version ${BuildConfig.VERSION_NAME}",
                     onClick = {}
                 )
@@ -305,7 +305,7 @@ fun SettingsScreen(
                             putExtra(Intent.EXTRA_EMAIL, arrayOf("dhruvo012@gmail.com"))
                             putExtra(
                                 Intent.EXTRA_SUBJECT,
-                                "GameVault Bug Report - v${BuildConfig.VERSION_NAME}"
+                                "GameShelf Bug Report - v${BuildConfig.VERSION_NAME}"
                             )
                             putExtra(
                                 Intent.EXTRA_TEXT,

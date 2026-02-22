@@ -4,7 +4,7 @@ import android.content.Intent
 import android.service.quicksettings.TileService
 import com.gamevault.app.ui.MainActivity
 
-class GameVaultTileService : TileService() {
+class GameShelfTileService : TileService() {
 
     override fun onClick() {
         val intent = Intent(this, MainActivity::class.java).apply {

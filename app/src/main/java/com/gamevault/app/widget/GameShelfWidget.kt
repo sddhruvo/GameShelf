@@ -18,7 +18,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.gamevault.app.ui.MainActivity
 
-class GameVaultWidget : GlanceAppWidget() {
+class GameShelfWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
@@ -37,7 +37,7 @@ class GameVaultWidget : GlanceAppWidget() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "GameVault",
+                text = "GameShelf",
                 style = TextStyle(
                     color = ColorProvider(Color.White),
                     fontSize = 18.sp,
@@ -56,6 +56,6 @@ class GameVaultWidget : GlanceAppWidget() {
     }
 }
 
-class GameVaultWidgetReceiver : GlanceAppWidgetReceiver() {
-    override val glanceAppWidget: GlanceAppWidget = GameVaultWidget()
+class GameShelfWidgetReceiver : GlanceAppWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = GameShelfWidget()
 }

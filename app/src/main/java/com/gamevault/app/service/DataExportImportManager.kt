@@ -1,6 +1,6 @@
 package com.gamevault.app.service
 
-import com.gamevault.app.data.db.GameVaultDatabase
+import com.gamevault.app.data.db.GameShelfDatabase
 import com.gamevault.app.data.model.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -21,7 +21,7 @@ data class ExportData(
 
 @Singleton
 class DataExportImportManager @Inject constructor(
-    private val database: GameVaultDatabase
+    private val database: GameShelfDatabase
 ) {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 

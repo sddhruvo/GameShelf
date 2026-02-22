@@ -84,7 +84,7 @@ class AdBlockVpnService : VpnService() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        // User swiped GameVault from recents — if VPN was auto-started, stop it
+        // User swiped GameShelf from recents — if VPN was auto-started, stop it
         val manager = getAdBlockManager()
         if (manager.isAutoStarted()) {
             stopVpn()
@@ -182,7 +182,7 @@ class AdBlockVpnService : VpnService() {
                 addDnsServer("8.8.8.8")
                 addDnsServer("1.1.1.1")
                 setMtu(1500)
-                setSession("GameVault Ad Blocker")
+                setSession("GameShelf Ad Blocker")
 
                 // Exclude self from VPN
                 try {

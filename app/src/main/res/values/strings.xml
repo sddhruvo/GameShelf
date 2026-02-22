@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GameVault</string>
+    <string name="app_name">GameShelf</string>
     <string name="search_games">Search games…</string>
     <string name="no_games_found">No games found</string>
     <string name="no_games_installed">No games installed on this device</string>
@@ -50,7 +50,7 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="amoled_black">AMOLED Black</string>
     <string name="dynamic_color">Dynamic Color</string>
-    <string name="onboarding_welcome">Welcome to GameVault</string>
+    <string name="onboarding_welcome">Welcome to GameShelf</string>
     <string name="onboarding_desc">Your personal game launcher &amp; tracker</string>
     <string name="get_started">Get Started</string>
     <string name="skip">Skip</string>
@@ -88,7 +88,7 @@
 
     <!-- Update Checker -->
     <string name="update_available">Update Available</string>
-    <string name="update_message">A new version of GameVault is available!</string>
+    <string name="update_message">A new version of GameShelf is available!</string>
     <string name="update_new_version">New version: %s</string>
     <string name="update_button">Update</string>
     <string name="update_later">Later</string>
@@ -97,6 +97,6 @@
     <!-- Bug Report -->
     <string name="report_bug">Report a Bug</string>
     <string name="report_bug_subtitle">Send feedback via email</string>
-    <string name="bug_report_subject">GameVault Bug Report - v%s</string>
+    <string name="bug_report_subject">GameShelf Bug Report - v%s</string>
     <string name="bug_report_body">Please describe the bug:\n\n\n--- Device Info ---\nApp Version: %1$s\nDevice: %2$s\nAndroid Version: %3$s (API %4$d)\n</string>
 </resources>

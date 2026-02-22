@@ -174,7 +174,7 @@ class OverlayService : Service() {
         )
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_gamepad)
-            .setContentTitle("GameVault Overlay")
+            .setContentTitle("GameShelf Overlay")
             .setContentText("Tracking game session")
             .setContentIntent(pendingIntent)
             .setOngoing(true)

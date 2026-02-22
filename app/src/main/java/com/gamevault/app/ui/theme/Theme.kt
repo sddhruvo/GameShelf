@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// GameVault brand colors
+// GameShelf brand colors
 val Purple = Color(0xFF6C63FF)
 val PurpleDark = Color(0xFF3D37A5)
 val PurpleGlow = Color(0xFF8B83FF)
@@ -34,7 +34,7 @@ val GlassSurfaceHover = Color(0x26FFFFFF)  // 15% white
 val GlassBorder = Color(0x33FFFFFF)        // 20% white
 
 // Extra theme info not in MaterialTheme
-data class GameVaultColors(
+data class GameShelfColors(
     val isGlass: Boolean = false,
     val glassSurface: Color = GlassSurface,
     val glassBorder: Color = GlassBorder,
@@ -42,7 +42,7 @@ data class GameVaultColors(
     val neon: Color = Neon
 )
 
-val LocalGameVaultColors = staticCompositionLocalOf { GameVaultColors() }
+val LocalGameShelfColors = staticCompositionLocalOf { GameShelfColors() }
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple,
@@ -106,7 +106,7 @@ private val GamerTypography = Typography(
 )
 
 @Composable
-fun GameVaultTheme(
+fun GameShelfTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
@@ -128,12 +128,12 @@ fun GameVaultTheme(
         else -> LightColorScheme
     }
 
-    val gameVaultColors = when (themeMode) {
-        ThemeMode.AMOLED -> GameVaultColors(isGlass = true)
-        else -> GameVaultColors(isGlass = false)
+    val gameShelfColors = when (themeMode) {
+        ThemeMode.AMOLED -> GameShelfColors(isGlass = true)
+        else -> GameShelfColors(isGlass = false)
     }
 
-    CompositionLocalProvider(LocalGameVaultColors provides gameVaultColors) {
+    CompositionLocalProvider(LocalGameShelfColors provides gameShelfColors) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = GamerTypography,

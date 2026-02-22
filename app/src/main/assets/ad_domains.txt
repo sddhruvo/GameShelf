@@ -1,4 +1,4 @@
-# GameVault Ad Domain Blocklist
+# GameShelf Ad Domain Blocklist
 # Gaming-focused ad networks and trackers
 # One domain per line, # for comments
 
