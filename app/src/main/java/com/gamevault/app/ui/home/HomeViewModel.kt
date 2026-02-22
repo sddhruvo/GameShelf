@@ -341,7 +341,7 @@ class HomeViewModel @Inject constructor(
             }
 
             if (_adBlockOnLaunch.value && adBlockManager.hasPermission()) {
-                adBlockManager.startVpn()
+                adBlockManager.startVpn(autoStarted = true)
             }
 
             // Auto-start timer if daily limit is set
@@ -372,7 +372,7 @@ class HomeViewModel @Inject constructor(
                 dndManager.enableDnd()
             }
             if (_adBlockOnLaunch.value && adBlockManager.hasPermission()) {
-                adBlockManager.startVpn()
+                adBlockManager.startVpn(autoStarted = true)
             }
         }
         val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName)

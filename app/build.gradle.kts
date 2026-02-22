@@ -6,9 +6,24 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+import java.util.Properties
+import java.io.FileInputStream
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
 android {
     namespace = "com.gamevault.app"
     compileSdk = 35
+
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file("gamevault-release.jks")
+            storePassword = localProperties["RELEASE_STORE_PASSWORD"] as String
+            keyAlias = "gamevault"
+            keyPassword = localProperties["RELEASE_KEY_PASSWORD"] as String
+        }
+    }
 
     defaultConfig {
         applicationId = "com.gamevault.app"
@@ -26,6 +41,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

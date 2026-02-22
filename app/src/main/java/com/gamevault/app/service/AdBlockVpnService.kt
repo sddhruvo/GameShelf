@@ -68,11 +68,28 @@ class AdBlockVpnService : VpnService() {
                 scope.launch { rebuildVpnInterface() }
             }
             null -> {
-                // Service restarted by system (START_STICKY with null intent)
-                scope.launch { startVpn() }
+                // Service restarted by system after process death (START_STICKY).
+                // If VPN was auto-started for a game session, don't restart —
+                // the session is gone (Android likely killed us to free memory for the game).
+                val manager = getAdBlockManager()
+                if (manager.isAutoStarted()) {
+                    manager.clearAutoStarted()
+                    stopSelf()
+                } else {
+                    scope.launch { startVpn() }
+                }
             }
         }
         return START_STICKY
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        // User swiped GameVault from recents — if VPN was auto-started, stop it
+        val manager = getAdBlockManager()
+        if (manager.isAutoStarted()) {
+            stopVpn()
+        }
+        super.onTaskRemoved(rootIntent)
     }
 
     override fun onRevoke() {
@@ -123,6 +140,7 @@ class AdBlockVpnService : VpnService() {
 
     private fun stopVpn() {
         isRunning = false
+        try { getAdBlockManager().clearAutoStarted() } catch (_: Exception) {}
         vpnInterface?.close()
         vpnInterface = null
         scope.coroutineContext[Job]?.cancelChildren()

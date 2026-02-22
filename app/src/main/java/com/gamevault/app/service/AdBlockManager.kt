@@ -2,6 +2,7 @@ package com.gamevault.app.service
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.VpnService
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -20,7 +21,12 @@ class AdBlockManager @Inject constructor(
 ) {
     companion object {
         val KEY_AD_WHITELIST = stringPreferencesKey("ad_block_whitelist")
+        private const val PREFS_NAME = "ad_block_prefs"
+        private const val KEY_AUTO_STARTED = "vpn_auto_started"
     }
+
+    private val prefs: SharedPreferences =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     /**
      * Lazy-loaded blocklist from assets/ad_domains.txt.
@@ -56,8 +62,12 @@ class AdBlockManager @Inject constructor(
 
     /**
      * Start the ad-blocking VPN service.
+     * @param autoStarted true when started automatically on game launch (will auto-disconnect later)
      */
-    fun startVpn() {
+    fun startVpn(autoStarted: Boolean = false) {
+        if (autoStarted) {
+            prefs.edit().putBoolean(KEY_AUTO_STARTED, true).apply()
+        }
         val intent = Intent(context, AdBlockVpnService::class.java).apply {
             action = AdBlockVpnService.ACTION_START
         }
@@ -68,10 +78,23 @@ class AdBlockManager @Inject constructor(
      * Stop the ad-blocking VPN service.
      */
     fun stopVpn() {
+        clearAutoStarted()
         val intent = Intent(context, AdBlockVpnService::class.java).apply {
             action = AdBlockVpnService.ACTION_STOP
         }
         context.startService(intent)
+    }
+
+    /**
+     * Whether the VPN was auto-started on game launch (persisted across process death).
+     */
+    fun isAutoStarted(): Boolean = prefs.getBoolean(KEY_AUTO_STARTED, false)
+
+    /**
+     * Clear the auto-started flag (called when VPN is stopped or user manually interacts).
+     */
+    fun clearAutoStarted() {
+        prefs.edit().putBoolean(KEY_AUTO_STARTED, false).apply()
     }
 
     /**
