@@ -9,12 +9,16 @@ import com.gamevault.app.data.db.GameDao
 import com.gamevault.app.data.db.UpdateDao
 import com.gamevault.app.data.model.Game
 import com.gamevault.app.data.model.GameUpdate
+import com.gamevault.app.ui.home.DetectionMode
+import com.gamevault.app.ui.home.HomeViewModel
+import com.gamevault.app.ui.home.dataStore
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class PackageEventReceiver : BroadcastReceiver() {
@@ -56,6 +60,16 @@ class PackageEventReceiver : BroadcastReceiver() {
 
         when (action) {
             Intent.ACTION_PACKAGE_ADDED -> {
+                // In MANUAL mode, skip auto-adding new games
+                val prefs = try {
+                    context.dataStore.data.first()
+                } catch (_: Exception) { null }
+                val modeStr = prefs?.get(HomeViewModel.KEY_DETECTION_MODE)
+                val mode = try {
+                    DetectionMode.valueOf(modeStr ?: "AUTO")
+                } catch (_: Exception) { DetectionMode.AUTO }
+                if (mode == DetectionMode.MANUAL) return
+
                 try {
                     val pm = context.packageManager
                     val appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA)

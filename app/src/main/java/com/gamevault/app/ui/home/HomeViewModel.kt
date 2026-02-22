@@ -12,6 +12,7 @@ import com.gamevault.app.data.repository.GameRepository
 import com.gamevault.app.service.AdBlockManager
 import com.gamevault.app.service.DndManager
 import com.gamevault.app.service.GameDetector
+import com.gamevault.app.service.InstalledApp
 import com.gamevault.app.service.OverlayService
 import com.gamevault.app.service.PlaytimeTracker
 import com.gamevault.app.service.TimerService
@@ -26,6 +27,8 @@ import javax.inject.Inject
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 enum class ViewMode { GRID, LIST, ICON }
+
+enum class DetectionMode { AUTO, MANUAL }
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -47,6 +50,9 @@ class HomeViewModel @Inject constructor(
         val KEY_DAILY_LIMIT_MS = longPreferencesKey("daily_limit_ms")
         val KEY_AD_BLOCK_ON_LAUNCH = booleanPreferencesKey("ad_block_on_launch")
         val KEY_AD_WHITELIST = stringPreferencesKey("ad_block_whitelist")
+        val KEY_DETECTION_MODE = stringPreferencesKey("detection_mode")
+        val KEY_DONATE_DISMISSED = booleanPreferencesKey("donate_dismissed")
+        val KEY_FIRST_LAUNCH_TIME = longPreferencesKey("first_launch_time")
     }
 
     private val _searchQuery = MutableStateFlow("")
@@ -66,6 +72,15 @@ class HomeViewModel @Inject constructor(
 
     private val _adBlockOnLaunch = MutableStateFlow(false)
     val adBlockOnLaunch: StateFlow<Boolean> = _adBlockOnLaunch
+
+    private val _detectionMode = MutableStateFlow(DetectionMode.AUTO)
+    val detectionMode: StateFlow<DetectionMode> = _detectionMode
+
+    private val _donateDismissed = MutableStateFlow(true) // default true to avoid flash
+    val donateDismissed: StateFlow<Boolean> = _donateDismissed
+
+    private val _firstLaunchTime = MutableStateFlow(0L)
+    val firstLaunchTime: StateFlow<Long> = _firstLaunchTime
 
     private val _dailyLimitMs = MutableStateFlow(0L)
 
@@ -112,6 +127,24 @@ class HomeViewModel @Inject constructor(
     init {
         loadPreferences()
         scanGames()
+        recordFirstLaunch()
+    }
+
+    private fun recordFirstLaunch() {
+        viewModelScope.launch {
+            context.dataStore.edit { prefs ->
+                if (prefs[KEY_FIRST_LAUNCH_TIME] == null) {
+                    prefs[KEY_FIRST_LAUNCH_TIME] = System.currentTimeMillis()
+                }
+            }
+        }
+    }
+
+    fun dismissDonateCard() {
+        _donateDismissed.value = true
+        viewModelScope.launch {
+            context.dataStore.edit { it[KEY_DONATE_DISMISSED] = true }
+        }
     }
 
     private fun loadPreferences() {
@@ -128,6 +161,11 @@ class HomeViewModel @Inject constructor(
                         SortOption.valueOf(prefs[KEY_SORT_OPTION] ?: "NAME")
                     } catch (_: Exception) { SortOption.NAME }
                     _dailyLimitMs.value = prefs[KEY_DAILY_LIMIT_MS] ?: 0L
+                    _detectionMode.value = try {
+                        DetectionMode.valueOf(prefs[KEY_DETECTION_MODE] ?: "AUTO")
+                    } catch (_: Exception) { DetectionMode.AUTO }
+                    _donateDismissed.value = prefs[KEY_DONATE_DISMISSED] ?: false
+                    _firstLaunchTime.value = prefs[KEY_FIRST_LAUNCH_TIME] ?: 0L
                 }
         }
     }
@@ -178,41 +216,111 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _isRefreshing.value = true
             try {
-                val detectedGames = gameDetector.detectInstalledGames()
-                val installedPackages = detectedGames.map { it.packageName }
-
-                repository.insertGames(detectedGames)
-                repository.markUninstalledExcept(installedPackages)
-
-                // Check for version changes and log updates
-                detectedGames.forEach { game ->
-                    val existing = repository.getGame(game.packageName)
-                    if (existing != null && existing.currentVersion.isNotBlank()
-                        && game.currentVersion.isNotBlank()
-                        && existing.currentVersion != game.currentVersion
-                    ) {
-                        repository.insertUpdate(
-                            com.gamevault.app.data.model.GameUpdate(
-                                packageName = game.packageName,
-                                oldVersion = existing.currentVersion,
-                                newVersion = game.currentVersion,
-                                oldSizeBytes = existing.appSizeBytes,
-                                newSizeBytes = game.appSizeBytes
-                            )
-                        )
-                    }
-                    repository.updateVersionAndSize(game.packageName, game.currentVersion, game.appSizeBytes)
-                }
-
-                if (playtimeTracker.hasUsagePermission()) {
-                    val dayAgo = System.currentTimeMillis() - (24 * 60 * 60 * 1000L)
-                    val gamePackages = detectedGames.map { it.packageName }.toSet()
-                    playtimeTracker.syncPlaytimeSince(dayAgo, gamePackages)
+                if (_detectionMode.value == DetectionMode.AUTO) {
+                    scanGamesAuto()
+                } else {
+                    refreshManualGames()
                 }
             } finally {
                 _isRefreshing.value = false
             }
         }
+    }
+
+    private suspend fun scanGamesAuto() {
+        val detectedGames = gameDetector.detectInstalledGames()
+        val installedPackages = detectedGames.map { it.packageName }
+
+        repository.insertGames(detectedGames)
+        repository.markUninstalledExcept(installedPackages)
+
+        // Check for version changes and log updates
+        detectedGames.forEach { game ->
+            val existing = repository.getGame(game.packageName)
+            if (existing != null && existing.currentVersion.isNotBlank()
+                && game.currentVersion.isNotBlank()
+                && existing.currentVersion != game.currentVersion
+            ) {
+                repository.insertUpdate(
+                    com.gamevault.app.data.model.GameUpdate(
+                        packageName = game.packageName,
+                        oldVersion = existing.currentVersion,
+                        newVersion = game.currentVersion,
+                        oldSizeBytes = existing.appSizeBytes,
+                        newSizeBytes = game.appSizeBytes
+                    )
+                )
+            }
+            repository.updateVersionAndSize(game.packageName, game.currentVersion, game.appSizeBytes)
+        }
+
+        if (playtimeTracker.hasUsagePermission()) {
+            val dayAgo = System.currentTimeMillis() - (24 * 60 * 60 * 1000L)
+            val gamePackages = detectedGames.map { it.packageName }.toSet()
+            playtimeTracker.syncPlaytimeSince(dayAgo, gamePackages)
+        }
+    }
+
+    private suspend fun refreshManualGames() {
+        // In manual mode, only refresh metadata for games already in DB
+        val currentGames = allGames.value
+        currentGames.forEach { game ->
+            val info = gameDetector.getGameInfo(game.packageName)
+            if (info != null) {
+                if (game.currentVersion.isNotBlank() && info.currentVersion.isNotBlank()
+                    && game.currentVersion != info.currentVersion
+                ) {
+                    repository.insertUpdate(
+                        com.gamevault.app.data.model.GameUpdate(
+                            packageName = game.packageName,
+                            oldVersion = game.currentVersion,
+                            newVersion = info.currentVersion,
+                            oldSizeBytes = game.appSizeBytes,
+                            newSizeBytes = info.appSizeBytes
+                        )
+                    )
+                }
+                repository.updateVersionAndSize(game.packageName, info.currentVersion, info.appSizeBytes)
+            } else {
+                // App is no longer installed
+                repository.setInstalled(game.packageName, false)
+            }
+        }
+
+        if (playtimeTracker.hasUsagePermission()) {
+            val dayAgo = System.currentTimeMillis() - (24 * 60 * 60 * 1000L)
+            val gamePackages = currentGames.map { it.packageName }.toSet()
+            playtimeTracker.syncPlaytimeSince(dayAgo, gamePackages)
+        }
+    }
+
+    fun addManualGame(packageName: String) {
+        viewModelScope.launch {
+            val game = gameDetector.getGameInfo(packageName)
+            if (game != null) {
+                repository.insertGame(game)
+            }
+        }
+    }
+
+    fun removeManualGame(packageName: String) {
+        viewModelScope.launch {
+            repository.setInstalled(packageName, false)
+        }
+    }
+
+    fun setDetectionMode(mode: DetectionMode) {
+        _detectionMode.value = mode
+        viewModelScope.launch {
+            context.dataStore.edit { it[KEY_DETECTION_MODE] = mode.name }
+            if (mode == DetectionMode.AUTO) {
+                scanGames()
+            }
+        }
+    }
+
+    fun getInstalledApps(): List<InstalledApp> {
+        return gameDetector.getAllVisibleApps()
     }
 
     fun launchGame(packageName: String) {

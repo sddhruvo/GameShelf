@@ -218,7 +218,7 @@ fun StatsScreen(
                         }
 
                         // Progress bar relative to #1
-                        val maxPlaytime = mostPlayed.firstOrNull()?.totalPlaytimeMs ?: 1L
+                        val maxPlaytime = mostPlayed.firstOrNull()?.totalPlaytimeMs?.coerceAtLeast(1L) ?: 1L
                         val progress = (game.totalPlaytimeMs.toFloat() / maxPlaytime).coerceIn(0f, 1f)
                         LinearProgressIndicator(
                             progress = { progress },

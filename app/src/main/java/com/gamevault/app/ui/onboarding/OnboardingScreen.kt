@@ -30,7 +30,7 @@ val onboardingPages = listOf(
     OnboardingPage(
         icon = Icons.Default.SportsEsports,
         title = "Your Game Library",
-        description = "GameVault automatically detects all games installed on your device. No clutter, no ads — just your games."
+        description = "GameVault automatically detects all games installed on your device. No clutter, no ads \u2014 just your games."
     ),
     OnboardingPage(
         icon = Icons.Default.Timer,

@@ -1,7 +1,10 @@
 package com.gamevault.app.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -16,6 +19,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,11 +28,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gamevault.app.R
 import com.gamevault.app.data.model.Game
+import com.gamevault.app.service.InstalledApp
 import com.gamevault.app.ui.components.GameCard
 import com.gamevault.app.ui.components.GameSearchBar
 import com.gamevault.app.ui.components.SortMenu
 import com.gamevault.app.ui.theme.LocalGameVaultColors
 import com.gamevault.app.util.FormatUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,11 +50,19 @@ fun HomeContent(
     val viewMode by viewModel.viewMode.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     val todayPlaytime by viewModel.todayPlaytime.collectAsStateWithLifecycle()
+    val donateDismissed by viewModel.donateDismissed.collectAsStateWithLifecycle()
+    val firstLaunchTime by viewModel.firstLaunchTime.collectAsStateWithLifecycle()
     val gvColors = LocalGameVaultColors.current
+    val homeContext = LocalContext.current
+
+    val showDonateCard = !donateDismissed &&
+            firstLaunchTime > 0L &&
+            (System.currentTimeMillis() - firstLaunchTime) > 14 * 24 * 60 * 60 * 1000L // 2 weeks
 
     var showContextMenu by remember { mutableStateOf<Game?>(null) }
     var hideConfirmTarget by remember { mutableStateOf<Game?>(null) }
     var limitExceededPackage by remember { mutableStateOf<String?>(null) }
+    var showAppPicker by remember { mutableStateOf(false) }
 
     // Observe daily limit exceeded events
     LaunchedEffect(Unit) {
@@ -91,39 +106,136 @@ fun HomeContent(
             ),
             windowInsets = WindowInsets(0)
         )
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = { viewModel.scanGames() },
-            modifier = Modifier.fillMaxSize()
-        ) {
-            if (games.isEmpty() && favorites.isEmpty()) {
-                EmptyState(searchQuery, viewModel)
-            } else {
-                when (viewMode) {
-                    ViewMode.GRID -> GridViewContent(
-                        games = games,
-                        favorites = favorites,
-                        searchQuery = searchQuery,
-                        viewModel = viewModel,
-                        onShowContextMenu = { showContextMenu = it }
+
+        // One-time donate card after 2 weeks
+        if (showDonateCard) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.Favorite,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "Enjoying GameVault?",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        "This app is built by a solo developer. If GameVault has been useful to you, consider supporting its development!",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-                    ViewMode.LIST -> ListViewContent(
-                        games = games,
-                        favorites = favorites,
-                        searchQuery = searchQuery,
-                        viewModel = viewModel,
-                        onShowContextMenu = { showContextMenu = it }
-                    )
-                    ViewMode.ICON -> IconViewContent(
-                        games = games,
-                        favorites = favorites,
-                        searchQuery = searchQuery,
-                        viewModel = viewModel,
-                        onShowContextMenu = { showContextMenu = it }
-                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(onClick = { viewModel.dismissDonateCard() }) {
+                            Text("Maybe later")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            onClick = {
+                                homeContext.startActivity(
+                                    Intent(Intent.ACTION_VIEW, Uri.parse("https://paypal.me/sddhruvo"))
+                                )
+                                viewModel.dismissDonateCard()
+                            }
+                        ) {
+                            Icon(Icons.Default.Favorite, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Support")
+                        }
+                    }
                 }
             }
         }
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = { viewModel.scanGames() },
+                modifier = Modifier.fillMaxSize()
+            ) {
+                if (games.isEmpty() && favorites.isEmpty()) {
+                    EmptyState(
+                        searchQuery = searchQuery,
+                        viewModel = viewModel,
+                        onAddGames = { showAppPicker = true }
+                    )
+                } else {
+                    when (viewMode) {
+                        ViewMode.GRID -> GridViewContent(
+                            games = games,
+                            favorites = favorites,
+                            searchQuery = searchQuery,
+                            viewModel = viewModel,
+                            onShowContextMenu = { showContextMenu = it }
+                        )
+                        ViewMode.LIST -> ListViewContent(
+                            games = games,
+                            favorites = favorites,
+                            searchQuery = searchQuery,
+                            viewModel = viewModel,
+                            onShowContextMenu = { showContextMenu = it }
+                        )
+                        ViewMode.ICON -> IconViewContent(
+                            games = games,
+                            favorites = favorites,
+                            searchQuery = searchQuery,
+                            viewModel = viewModel,
+                            onShowContextMenu = { showContextMenu = it }
+                        )
+                    }
+                }
+            }
+
+            // FAB to manually add games
+            FloatingActionButton(
+                onClick = { showAppPicker = true },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_games))
+            }
+        }
+    }
+
+    // App Picker Dialog
+    if (showAppPicker) {
+        val allGamesSnapshot = games
+        val existingPackages = remember(allGamesSnapshot) {
+            allGamesSnapshot.map { it.packageName }.toSet()
+        }
+        var installedApps by remember { mutableStateOf<List<InstalledApp>>(emptyList()) }
+        LaunchedEffect(Unit) {
+            installedApps = withContext(Dispatchers.IO) {
+                viewModel.getInstalledApps()
+            }
+        }
+        AppPickerDialog(
+            onDismiss = { showAppPicker = false },
+            installedApps = installedApps,
+            existingPackages = existingPackages,
+            onConfirm = { toAdd, toRemove ->
+                toAdd.forEach { viewModel.addManualGame(it) }
+                toRemove.forEach { viewModel.removeManualGame(it) }
+            }
+        )
     }
 
     // Context menu dialog
@@ -214,7 +326,11 @@ fun HomeContent(
 }
 
 @Composable
-private fun EmptyState(searchQuery: String, viewModel: HomeViewModel) {
+private fun EmptyState(
+    searchQuery: String,
+    viewModel: HomeViewModel,
+    onAddGames: () -> Unit
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         GameSearchBar(
             query = searchQuery,
@@ -242,6 +358,14 @@ private fun EmptyState(searchQuery: String, viewModel: HomeViewModel) {
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                if (searchQuery.isBlank()) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = onAddGames) {
+                        Icon(Icons.Default.Add, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(stringResource(R.string.add_games))
+                    }
+                }
             }
         }
     }

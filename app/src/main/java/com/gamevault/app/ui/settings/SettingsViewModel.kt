@@ -14,6 +14,7 @@ import com.gamevault.app.service.AdBlockManager
 import com.gamevault.app.service.DataExportImportManager
 import com.gamevault.app.service.DndManager
 import com.gamevault.app.service.PlaytimeTracker
+import com.gamevault.app.ui.home.DetectionMode
 import com.gamevault.app.ui.home.HomeViewModel
 import com.gamevault.app.ui.home.dataStore
 import com.gamevault.app.ui.theme.ThemeMode
@@ -50,6 +51,9 @@ class SettingsViewModel @Inject constructor(
     private val _dailyLimitMs = MutableStateFlow(0L)
     val dailyLimitMs: StateFlow<Long> = _dailyLimitMs
 
+    private val _detectionMode = MutableStateFlow(DetectionMode.AUTO)
+    val detectionMode: StateFlow<DetectionMode> = _detectionMode
+
     val hasUsagePermission: Boolean get() = playtimeTracker.hasUsagePermission()
     val hasDndPermission: Boolean get() = dndManager.hasPermission()
     val hasOverlayPermission: Boolean get() = Settings.canDrawOverlays(context)
@@ -70,6 +74,9 @@ class SettingsViewModel @Inject constructor(
                     _dndOnLaunch.value = prefs[HomeViewModel.KEY_DND_ON_LAUNCH] ?: false
                     _adBlockOnLaunch.value = prefs[HomeViewModel.KEY_AD_BLOCK_ON_LAUNCH] ?: false
                     _dailyLimitMs.value = prefs[HomeViewModel.KEY_DAILY_LIMIT_MS] ?: 0L
+                    _detectionMode.value = try {
+                        DetectionMode.valueOf(prefs[HomeViewModel.KEY_DETECTION_MODE] ?: "AUTO")
+                    } catch (_: Exception) { DetectionMode.AUTO }
                 }
         }
     }
@@ -111,6 +118,13 @@ class SettingsViewModel @Inject constructor(
         _dailyLimitMs.value = ms
         viewModelScope.launch {
             context.dataStore.edit { it[HomeViewModel.KEY_DAILY_LIMIT_MS] = ms }
+        }
+    }
+
+    fun setDetectionMode(mode: DetectionMode) {
+        _detectionMode.value = mode
+        viewModelScope.launch {
+            context.dataStore.edit { it[HomeViewModel.KEY_DETECTION_MODE] = mode.name }
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ManageSearch
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.gamevault.app.ui.home.DetectionMode
 import com.gamevault.app.ui.theme.ThemeMode
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,11 +33,13 @@ fun SettingsScreen(
     val adBlockOnLaunch by viewModel.adBlockOnLaunch.collectAsStateWithLifecycle()
     val dailyLimitMs by viewModel.dailyLimitMs.collectAsStateWithLifecycle()
     val hiddenGames by viewModel.hiddenGames.collectAsStateWithLifecycle()
+    val detectionMode by viewModel.detectionMode.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     var showThemeDialog by remember { mutableStateOf(false) }
     var showTimerDialog by remember { mutableStateOf(false) }
     var showHiddenDialog by remember { mutableStateOf(false) }
+    var showDetectionModeDialog by remember { mutableStateOf(false) }
 
     val vpnPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -101,6 +105,26 @@ fun SettingsScreen(
                         onCheckedChange = { viewModel.setDynamicColor(it) }
                     )
                 }
+            }
+
+            // Game Detection
+            item {
+                Text(
+                    "Game Detection",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+
+            item {
+                SettingsItem(
+                    icon = Icons.AutoMirrored.Filled.ManageSearch,
+                    title = "Detection Mode",
+                    subtitle = if (detectionMode == DetectionMode.AUTO) "Automatic" else "Manual",
+                    onClick = { showDetectionModeDialog = true }
+                )
             }
 
             // Permissions
@@ -266,6 +290,22 @@ fun SettingsScreen(
                     onClick = {}
                 )
             }
+
+            item {
+                SettingsItem(
+                    icon = Icons.Default.Favorite,
+                    title = "Support Development",
+                    subtitle = "Buy me a coffee via PayPal",
+                    onClick = {
+                        val intent = android.content.Intent(
+                            android.content.Intent.ACTION_VIEW,
+                            android.net.Uri.parse("https://paypal.me/sddhruvo")
+                        )
+                        context.startActivity(intent)
+                    },
+                    statusColor = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 
@@ -356,6 +396,51 @@ fun SettingsScreen(
                     }) { Text("Remove Limit") }
                     TextButton(onClick = { showTimerDialog = false }) { Text("Cancel") }
                 }
+            }
+        )
+    }
+
+    // Detection Mode Dialog
+    if (showDetectionModeDialog) {
+        AlertDialog(
+            onDismissRequest = { showDetectionModeDialog = false },
+            title = { Text("Game Detection Mode") },
+            text = {
+                Column {
+                    DetectionMode.entries.forEach { mode ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = mode == detectionMode,
+                                onClick = {
+                                    viewModel.setDetectionMode(mode)
+                                    showDetectionModeDialog = false
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column {
+                                Text(
+                                    if (mode == DetectionMode.AUTO) "Automatic" else "Manual",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Medium
+                                )
+                                Text(
+                                    if (mode == DetectionMode.AUTO)
+                                        "Automatically find all your games"
+                                    else
+                                        "Manually pick which apps are games",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showDetectionModeDialog = false }) { Text("Cancel") }
             }
         )
     }

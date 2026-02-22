@@ -9,10 +9,44 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+data class InstalledApp(
+    val packageName: String,
+    val name: String,
+    val isDetectedAsGame: Boolean
+)
+
 @Singleton
 class GameDetector @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+
+    fun getAllVisibleApps(): List<InstalledApp> {
+        val pm = context.packageManager
+        return pm.getInstalledApplications(PackageManager.GET_META_DATA)
+            .filter { it.flags and ApplicationInfo.FLAG_SYSTEM == 0 }
+            .map { appInfo ->
+                InstalledApp(
+                    packageName = appInfo.packageName,
+                    name = pm.getApplicationLabel(appInfo).toString(),
+                    isDetectedAsGame = isGame(appInfo)
+                )
+            }
+            .sortedBy { it.name.lowercase() }
+    }
+
+    fun getAppByPackageName(packageName: String): InstalledApp? {
+        return try {
+            val pm = context.packageManager
+            val appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+            InstalledApp(
+                packageName = appInfo.packageName,
+                name = pm.getApplicationLabel(appInfo).toString(),
+                isDetectedAsGame = isGame(appInfo)
+            )
+        } catch (_: PackageManager.NameNotFoundException) {
+            null
+        }
+    }
     fun detectInstalledGames(): List<Game> {
         val pm = context.packageManager
         val installedApps = pm.getInstalledApplications(PackageManager.GET_META_DATA)

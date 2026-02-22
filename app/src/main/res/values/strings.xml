@@ -71,6 +71,18 @@
     <string name="allow_ads">Allow Ads</string>
     <string name="allow_ads_description">Bypass ad blocker for this game (e.g., for rewarded ads)</string>
     <string name="ad_block_active">Ad Blocker Active</string>
+
+    <!-- Detection Mode -->
+    <string name="detection_mode_title">Game Detection</string>
+    <string name="detection_auto">Automatic</string>
+    <string name="detection_manual">Manual</string>
+    <string name="detection_auto_desc">Automatically find all your games. Requires app visibility permission.</string>
+    <string name="detection_manual_desc">Browse installed apps and choose which are games. No extra permission needed.</string>
+    <string name="add_games">Add Games</string>
+    <string name="no_games_added">No games added yet</string>
+    <string name="search_apps">Search apps…</string>
+    <string name="add_by_package">Add by package name</string>
+    <string name="detected_as_game">Game</string>
     <string name="ads_blocked_count">%d ads blocked</string>
     <string name="stop">Stop</string>
 </resources>
