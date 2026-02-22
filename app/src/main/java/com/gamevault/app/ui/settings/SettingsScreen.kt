@@ -1,5 +1,7 @@
 package com.gamevault.app.ui.settings
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.gamevault.app.BuildConfig
 import com.gamevault.app.ui.home.DetectionMode
 import com.gamevault.app.ui.theme.ThemeMode
 
@@ -286,8 +289,34 @@ fun SettingsScreen(
                 SettingsItem(
                     icon = Icons.Default.Info,
                     title = "GameVault",
-                    subtitle = "Version 1.0.0",
+                    subtitle = "Version ${BuildConfig.VERSION_NAME}",
                     onClick = {}
+                )
+            }
+
+            item {
+                SettingsItem(
+                    icon = Icons.Default.BugReport,
+                    title = "Report a Bug",
+                    subtitle = "Send feedback via email",
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:")
+                            putExtra(Intent.EXTRA_EMAIL, arrayOf("dhruvo012@gmail.com"))
+                            putExtra(
+                                Intent.EXTRA_SUBJECT,
+                                "GameVault Bug Report - v${BuildConfig.VERSION_NAME}"
+                            )
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "Please describe the bug:\n\n\n--- Device Info ---\n" +
+                                    "App Version: ${BuildConfig.VERSION_NAME}\n" +
+                                    "Device: ${Build.MANUFACTURER} ${Build.MODEL}\n" +
+                                    "Android Version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})\n"
+                            )
+                        }
+                        context.startActivity(intent)
+                    }
                 )
             }
 

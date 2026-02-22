@@ -11,7 +11,7 @@
 
 ---
 
-GameVault detects the games on your device, tracks your playtime, and gives you detailed analytics — all in one place. No ads, no accounts, no data leaves your phone.
+GameVault brings all your mobile games into one place. It detects your installed games, tracks how long you play, and gives you detailed stats and tools to manage your gaming habits — all offline, with zero ads and zero data collection.
 
 ## Screenshots
 
@@ -25,46 +25,82 @@ GameVault detects the games on your device, tracks your playtime, and gives you 
 
 ## Features
 
-- **Game Library** — Automatically detects installed games or let you manually add them. Browse in grid, list, or icon view. Search, sort, favorite, and organise games into custom collections. Add personal notes, ratings, and tags.
+### Game Library
+- Automatically detects installed games, or manually pick which apps count as games
+- Three view modes — grid, list, and icon
+- Search, sort (by name, last played, most played, install date, or size), and favorite your games
+- Organize games into custom collections with names and descriptions
+- Add personal ratings, notes, and tags to any game
+- Hide games you don't want to see
+- Set custom cover images
 
-- **Playtime Tracking** — Records play sessions and shows stats for today, this week, this month, or all time. Track your play streak and see daily playtime in interactive charts.
+### Playtime Tracking
+- Automatic session recording — just play, GameVault handles the rest
+- Stats at a glance: today, this week, this month, and all time
+- Interactive weekly bar chart showing your daily playtime
+- Play streak tracking — see how many consecutive days you've been gaming
+- Per-game breakdown with ranked most-played list
 
-- **Gaming Tools** — Countdown timer with optional floating overlay. Automatic Do Not Disturb when a game launches. Daily screen time goals. Quick Settings tile for fast access.
+### Gaming Tools
+- **Floating Timer** — draggable overlay that shows elapsed or remaining time on top of any game
+- **Do Not Disturb** — automatically silences notifications when you launch a game
+- **Daily Screen Time Goal** — set a daily limit and get notified when you hit it
+- **Quick Settings Tile** — launch GameVault from your notification shade
 
-- **Ad Blocker** — Lightweight DNS-based ad blocker. Only DNS queries are filtered — all other traffic flows normally. Per-game whitelisting for games that use rewarded ads.
+### Ad Blocker
+- Lightweight, local DNS-based ad blocking — no traffic leaves your device
+- Starts automatically when you launch a game (if enabled)
+- Per-game whitelisting for games that use rewarded ads
 
-- **Reports & Export** — Weekly gaming report notification. Game update log tracks version and size changes. Export your full library and session history as JSON.
+### Updates & History
+- Tracks game version changes with old/new version numbers
+- Records app size changes with each update
+- Add your own changelog notes to any update
+- Weekly gaming report notification
 
-- **Home Screen Widget** — Quick access widget for your home screen.
+### Data & Backup
+- Export your full library, sessions, and settings as JSON
+- Import from a previous backup to restore everything
+- Home screen widget for quick access
+
+### Automatic Updates
+- Checks for new releases on app launch
+- Shows changelog and a direct download link when an update is available
 
 ## Download
 
-<!-- Update with actual link -->
-[Download from Google Play](#) or grab the latest APK from [Releases](#).
+Grab the latest APK from [Releases](https://github.com/sddhruvo/GameVault/releases).
 
 ## Privacy & Data
 
 **Everything stays on your device.** GameVault does not collect, transmit, or share any personal data. There are no analytics, no telemetry, no servers.
 
-### What the app accesses and why
+The only network requests the app makes are:
+- **Ad blocker** — local DNS filtering (queries stay on-device via a local VPN)
+- **Update checker** — a single call to the GitHub API on launch to check for new versions
 
-| What | Why | Can I deny it? |
-|------|-----|----------------|
-| **List of installed apps** | To detect which apps are games and build your library | Yes — you can manually add games instead |
-| **App usage stats** | To calculate how long you play each game | Yes — playtime tracking simply won't work |
-| **Do Not Disturb control** | To silence notifications while you're gaming | Yes — DND on launch just won't activate |
-| **Draw over other apps** | To show the floating timer overlay on top of games | Yes — the floating timer won't appear |
-| **VPN service** (local only) | To filter DNS queries for ad blocking — no traffic leaves your device | Yes — ad blocker won't work |
-| **Notifications** | To show timer alerts and weekly reports | Yes — you just won't see notifications |
-| **Storage / media** | To let you pick custom cover images for games | Yes — custom covers won't be available |
+### Permissions and why they're needed
+
+| Permission | Purpose | Required? |
+|---|---|---|
+| **Installed apps** | Detect which apps are games | No — add games manually instead |
+| **Usage stats** | Calculate playtime per game | No — playtime tracking won't work |
+| **Do Not Disturb** | Silence notifications while gaming | No |
+| **Draw over apps** | Show the floating timer overlay | No |
+| **VPN service** (local only) | Filter DNS for ad blocking | No |
+| **Notifications** | Timer alerts and weekly reports | No |
+| **Storage** | Pick custom cover images | No |
 
 ### What the app does NOT do
 
-- Does not connect to the internet (except local DNS filtering when ad blocker is on)
-- Does not have user accounts or sign-in
+- Does not require an account or sign-in
 - Does not collect analytics or crash reports
 - Does not contain ads
 - Does not share data with third parties
+
+## Feedback
+
+Found a bug? Use **Settings > Report a Bug** in the app to send a pre-filled email, or open an issue on [GitHub](https://github.com/sddhruvo/GameVault/issues).
 
 ## Support
 

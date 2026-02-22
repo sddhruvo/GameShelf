@@ -85,4 +85,18 @@
     <string name="detected_as_game">Game</string>
     <string name="ads_blocked_count">%d ads blocked</string>
     <string name="stop">Stop</string>
+
+    <!-- Update Checker -->
+    <string name="update_available">Update Available</string>
+    <string name="update_message">A new version of GameVault is available!</string>
+    <string name="update_new_version">New version: %s</string>
+    <string name="update_button">Update</string>
+    <string name="update_later">Later</string>
+    <string name="update_changelog">What\'s new:</string>
+
+    <!-- Bug Report -->
+    <string name="report_bug">Report a Bug</string>
+    <string name="report_bug_subtitle">Send feedback via email</string>
+    <string name="bug_report_subject">GameVault Bug Report - v%s</string>
+    <string name="bug_report_body">Please describe the bug:\n\n\n--- Device Info ---\nApp Version: %1$s\nDevice: %2$s\nAndroid Version: %3$s (API %4$d)\n</string>
 </resources>
