@@ -4,16 +4,14 @@
 </p>
 
 <p align="center">
-  <img alt="Min SDK" src="https://img.shields.io/badge/min%20sdk-26-blue">
-  <img alt="Target SDK" src="https://img.shields.io/badge/target%20sdk-35-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-green">
-  <img alt="Kotlin" src="https://img.shields.io/badge/kotlin-2.1.0-purple">
+  <img alt="Android" src="https://img.shields.io/badge/Android-8.0%2B-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue">
   <img alt="License" src="https://img.shields.io/badge/license-All%20Rights%20Reserved-red">
 </p>
 
 ---
 
-GameVault automatically detects the games installed on your device, tracks your playtime across sessions, and gives you detailed analytics — all in one place. It also ships with gaming tools like a floating timer, automatic Do Not Disturb, and a local DNS ad blocker.
+GameVault detects the games on your device, tracks your playtime, and gives you detailed analytics — all in one place. No ads, no accounts, no data leaves your phone.
 
 ## Screenshots
 
@@ -27,109 +25,52 @@ GameVault automatically detects the games installed on your device, tracks your 
 
 ## Features
 
-**Game Library** — Automatically detects installed games and keeps your library up to date as you install, update, or remove apps. Browse in grid, list, or icon view. Search, sort, favorite, and organise games into custom collections. Add personal notes, ratings, and tags to any title.
+- **Game Library** — Automatically detects installed games or let you manually add them. Browse in grid, list, or icon view. Search, sort, favorite, and organise games into custom collections. Add personal notes, ratings, and tags.
 
-**Playtime Tracking** — Records play sessions via the Android Usage Stats API. View stats for today, this week, this month, or all time. Track your play streak and see daily playtime visualised in interactive charts.
+- **Playtime Tracking** — Records play sessions and shows stats for today, this week, this month, or all time. Track your play streak and see daily playtime in interactive charts.
 
-**Gaming Tools** — Set a countdown timer that runs as a foreground service and optionally shows a draggable floating overlay on top of your game. Enable automatic Do Not Disturb when a game launches. Access GameVault instantly from the Quick Settings tile.
+- **Gaming Tools** — Countdown timer with optional floating overlay. Automatic Do Not Disturb when a game launches. Daily screen time goals. Quick Settings tile for fast access.
 
-**Ad Blocker** — A lightweight DNS-based ad blocker powered by Android's VPN API. Only DNS traffic is routed through the local VPN — all other traffic flows normally. Comes with 200+ blocked ad domains out of the box, and supports per-game whitelisting for games that use rewarded ads.
+- **Ad Blocker** — Lightweight DNS-based ad blocker. Only DNS queries are filtered — all other traffic flows normally. Per-game whitelisting for games that use rewarded ads.
 
-**Analytics & Reports** — Weekly gaming report delivered as a notification. Game update log tracks version and size changes over time. Export your full library and session history as JSON or CSV.
+- **Reports & Export** — Weekly gaming report notification. Game update log tracks version and size changes. Export your full library and session history as JSON.
 
-**Home Screen Widget** — A Glance-powered widget for quick access from your home screen.
+- **Home Screen Widget** — Quick access widget for your home screen.
 
-## Tech Stack
+## Download
 
-| | |
-|-|-|
-| **Language** | Kotlin |
-| **UI** | Jetpack Compose + Material 3 |
-| **Architecture** | MVVM, Repository pattern |
-| **DI** | Hilt |
-| **Database** | Room |
-| **Preferences** | DataStore |
-| **Navigation** | Navigation Compose |
-| **Background work** | WorkManager, foreground services |
-| **Charts** | Vico |
-| **Image loading** | Coil |
-| **Widget** | Glance AppWidget |
+<!-- Update with actual link -->
+[Download from Google Play](#) or grab the latest APK from [Releases](#).
 
-## Requirements
+## Privacy & Data
 
-- Android 8.0+ (API 26)
-- Android Studio Ladybug or newer
-- JDK 17 (bundled JBR recommended)
+**Everything stays on your device.** GameVault does not collect, transmit, or share any personal data. There are no analytics, no telemetry, no servers.
 
-## Getting Started
+### What the app accesses and why
 
-### Clone
+| What | Why | Can I deny it? |
+|------|-----|----------------|
+| **List of installed apps** | To detect which apps are games and build your library | Yes — you can manually add games instead |
+| **App usage stats** | To calculate how long you play each game | Yes — playtime tracking simply won't work |
+| **Do Not Disturb control** | To silence notifications while you're gaming | Yes — DND on launch just won't activate |
+| **Draw over other apps** | To show the floating timer overlay on top of games | Yes — the floating timer won't appear |
+| **VPN service** (local only) | To filter DNS queries for ad blocking — no traffic leaves your device | Yes — ad blocker won't work |
+| **Notifications** | To show timer alerts and weekly reports | Yes — you just won't see notifications |
+| **Storage / media** | To let you pick custom cover images for games | Yes — custom covers won't be available |
 
-```bash
-git clone https://github.com/<your-org>/GameVault.git
-cd GameVault
-```
+### What the app does NOT do
 
-### Build
+- Does not connect to the internet (except local DNS filtering when ad blocker is on)
+- Does not have user accounts or sign-in
+- Does not collect analytics or crash reports
+- Does not contain ads
+- Does not share data with third parties
 
-```bash
-./gradlew assembleDebug
-```
+## Support
 
-The APK is output to `app/build/outputs/apk/debug/`.
+If you enjoy GameVault and want to support its development:
 
-### Run
-
-Open the project in Android Studio and run on a device or emulator with API 26+.
-
-### Release build
-
-```bash
-./gradlew assembleRelease
-```
-
-ProGuard/R8 minification and resource shrinking are enabled for the release build type.
-
-## Architecture
-
-```
-com.gamevault.app/
-├── data/          Room database, DAOs, entities, repository
-├── di/            Hilt modules
-├── domain/        Domain models and use cases
-├── receiver/      BroadcastReceivers (package events, boot)
-├── service/       VPN, timer, overlay, playtime tracker, export/import
-├── ui/            Compose screens, ViewModels, theme, navigation
-├── util/          Formatting helpers
-└── widget/        Glance home screen widget
-```
-
-The app follows **MVVM** with a **Repository** layer. ViewModels expose `StateFlow`s consumed by Compose screens via `collectAsStateWithLifecycle()`. Room provides the single source of truth, with DataStore handling lightweight key-value preferences.
-
-## Permissions
-
-GameVault requests only the permissions it needs. Each one is explained in the in-app settings screen, and features degrade gracefully when a permission is denied.
-
-| Permission | Purpose |
-|-----------|---------|
-| `QUERY_ALL_PACKAGES` | Detect all installed games |
-| `PACKAGE_USAGE_STATS` | Read playtime via UsageStatsManager |
-| `SYSTEM_ALERT_WINDOW` | Floating timer overlay |
-| `ACCESS_NOTIFICATION_POLICY` | Toggle Do Not Disturb |
-| `FOREGROUND_SERVICE` | Timer, overlay, and VPN services |
-| `POST_NOTIFICATIONS` | Timer alerts and weekly reports |
-| `RECEIVE_BOOT_COMPLETED` | Re-schedule background workers after reboot |
-| `READ_MEDIA_IMAGES` | Screenshot gallery |
-| `INTERNET` | DNS forwarding for the ad blocker |
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes
-4. Push to the branch and open a pull request
-
-Please make sure the project builds cleanly (`./gradlew assembleDebug`) before submitting.
+[Buy me a coffee via PayPal](https://paypal.me/sddhruvo)
 
 ## License
 
